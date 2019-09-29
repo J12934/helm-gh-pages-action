@@ -1,20 +1,20 @@
-name: "Gatsby Publish"
-description: "Build and deploy your Gatsby site to GitHub Pages."
+name: 'Helm Publish'
+description: 'Build and deploy your Helm charts to GitHub Pages.'
 branding:
-  icon: "book-open"
-  color: "purple"
+  icon: 'archive'
+  color: 'blue'
 inputs:
   access-token:
-    description: "A personal access token needed to push your site after it has been built."
+    description: 'A personal access token needed to push your site after it has been built.'
     required: true
   deploy-branch:
-    description: "The branch expected by GitHub to have the static files needed for your site."
+    description: 'The branch expected by GitHub to have the static files needed for your site.'
     required: false
-    default: "master"
-  gatsby-args:
-    description: "Additional arguments that get passed to `gatsby build`."
+    default: 'master'
+  charts-folder:
+    description: 'The folder in which the helm charts are located'
     required: false
-    default: ""
+    default: 'charts'
 runs:
-  using: "node12"
-  main: "index.js"
+  using: 'node12'
+  main: 'index.js'
