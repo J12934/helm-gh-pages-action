@@ -65,7 +65,7 @@ async function run() {
       console.log(`Packaging helm chart in directory ${chartDirname}`);
       await exec.exec(
         `helm package`,
-        [chartDirname, '--dependency-update', '--destination', '../output'],
+        [chartDirname, '--destination', '../output'],
         { cwd: `./${chartsDir}` }
       );
     }
