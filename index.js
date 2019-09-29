@@ -42,7 +42,9 @@ async function run() {
     console.log(
       'You can configure the deploy branch by setting the `deploy-branch` input for this action.'
     );
-    await exec.exec(`git clone`, ['-b', deployBranch, repoURL], { cwd: './' });
+    await exec.exec(`git clone`, ['-b', deployBranch, repoURL, 'output'], {
+      cwd: './',
+    });
     await exec.exec(`git config user.name`, [github.context.actor], {
       cwd: './output',
     });
