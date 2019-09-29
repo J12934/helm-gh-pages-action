@@ -40,6 +40,8 @@ async function run() {
 
     const chartDirectories = getDirectories(path.resolve(`./${chartsDir}`));
 
+    console.log('Charts dir content');
+    await exec.exec(`ls`, { cwd: `./${chartsDir}` });
     for (const chartDirname of chartDirectories) {
       console.log(`Packaging helm chart in directory ${chartDirname}`);
       await exec.exec(
