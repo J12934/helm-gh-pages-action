@@ -27,7 +27,7 @@ async function run() {
     const deployBranch = core.getInput('deploy-branch');
     if (!deployBranch) deployBranch = 'master';
 
-    const chartDir = core.getInput('charts-folder');
+    const chartsDir = core.getInput('charts-folder');
 
     if (github.context.ref === `refs/heads/${deployBranch}`) {
       console.log(`Triggered by branch used to deploy: ${github.context.ref}.`);
@@ -38,7 +38,7 @@ async function run() {
     await exec.exec(`helm init --client-only`);
     console.log('Initialized helm client');
 
-    const chartDirectories = getDirectories(path.resolve(chartDir));
+    const chartDirectories = getDirectories(path.resolve(`./${chartsDir}`));
 
     for (const chartDirname of chartDirectories) {
       console.log(`Packaging helm chart in directory ${chartDirname}`);
@@ -46,8 +46,8 @@ async function run() {
         `helm package`,
         chartDirname,
         '--destination',
-        './output',
-        { cwd: chartDir }
+        '../output',
+        { cwd: `./${chartsDir}` }
       );
     }
 
@@ -72,23 +72,23 @@ async function run() {
     console.log(
       'You can configure the deploy branch by setting the `deploy-branch` input for this action.'
     );
-    await exec.exec(`git clone`, [], { cwd: './public' });
+    await exec.exec(`git clone`, [], { cwd: './output' });
     await exec.exec(`git config user.name`, [github.context.actor], {
-      cwd: './public',
+      cwd: './output',
     });
     await exec.exec(
       `git config user.email`,
       [`${github.context.actor}@users.noreply.github.com`],
-      { cwd: './public' }
+      { cwd: './output' }
     );
-    await exec.exec(`git add`, ['.'], { cwd: './public' });
+    await exec.exec(`git add`, ['.'], { cwd: './output' });
     await exec.exec(
       `git commit`,
       ['-m', `deployed via ⎈ Helm Publish Action for ${github.context.sha}`],
-      { cwd: './public' }
+      { cwd: './output' }
     );
     await exec.exec(`git push`, [repoURL, `master:${deployBranch}`], {
-      cwd: './public',
+      cwd: './output',
     });
     console.log('Finished deploying your site.');
 
