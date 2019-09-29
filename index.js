@@ -35,6 +35,23 @@ async function run() {
       return;
     }
 
+    const repo = `${github.context.repo.owner}/${github.context.repo.repo}`;
+    const repoURL = `https://${accessToken}@github.com/${repo}.git`;
+    console.log('Ready to deploy your new shiny site!');
+    console.log(`Deploying to repo: ${repo} and branch: ${deployBranch}`);
+    console.log(
+      'You can configure the deploy branch by setting the `deploy-branch` input for this action.'
+    );
+    await exec.exec(`git clone`, ['-b', deployBranch, repoURL], { cwd: './' });
+    await exec.exec(`git config user.name`, [github.context.actor], {
+      cwd: './output',
+    });
+    await exec.exec(
+      `git config user.email`,
+      [`${github.context.actor}@users.noreply.github.com`],
+      { cwd: './output' }
+    );
+
     await exec.exec(`helm init --client-only`);
     console.log('Initialized helm client');
 
@@ -65,29 +82,13 @@ async function run() {
       console.log('Finished copying CNAME.');
     }
 
-    const repo = `${github.context.repo.owner}/${github.context.repo.repo}`;
-    const repoURL = `https://${accessToken}@github.com/${repo}.git`;
-    console.log('Ready to deploy your new shiny site!');
-    console.log(`Deploying to repo: ${repo} and branch: ${deployBranch}`);
-    console.log(
-      'You can configure the deploy branch by setting the `deploy-branch` input for this action.'
-    );
-    await exec.exec(`git clone`, [], { cwd: './output' });
-    await exec.exec(`git config user.name`, [github.context.actor], {
-      cwd: './output',
-    });
-    await exec.exec(
-      `git config user.email`,
-      [`${github.context.actor}@users.noreply.github.com`],
-      { cwd: './output' }
-    );
     await exec.exec(`git add`, ['.'], { cwd: './output' });
     await exec.exec(
       `git commit`,
       ['-m', `deployed via ⎈ Helm Publish Action for ${github.context.sha}`],
       { cwd: './output' }
     );
-    await exec.exec(`git push`, [repoURL, `master:${deployBranch}`], {
+    await exec.exec(`git push`, ['-u', 'origin', `${deployBranch}`], {
       cwd: './output',
     });
     console.log('Finished deploying your site.');
