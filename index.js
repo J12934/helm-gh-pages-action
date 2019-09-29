@@ -38,9 +38,7 @@ async function run() {
     await exec.exec(`helm init --client-only`);
     console.log('Initialized helm client');
 
-    const chartDirectories = getDirectories(
-      path.resolve(`${__dirname}/${chartDir}`)
-    );
+    const chartDirectories = getDirectories(path.resolve(chartDir));
 
     for (const chartDirname of chartDirectories) {
       console.log(`Packaging helm chart in directory ${chartDirname}`);
@@ -48,15 +46,15 @@ async function run() {
         `helm package`,
         chartDirname,
         '--destination',
-        `${__dirname}/output`,
-        { cwd: `${__dirname}/${chartDir}` }
+        './output',
+        { cwd: chartDir }
       );
     }
 
     console.log('Packaged all helm charts.');
     console.log(`Building index.yaml`);
 
-    await exec.exec(`helm repo index`, `${__dirname}/output`);
+    await exec.exec(`helm repo index`, `./output`);
 
     console.log(`Successfully build index.yaml.`);
 
