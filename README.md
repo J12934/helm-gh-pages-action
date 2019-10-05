@@ -72,3 +72,8 @@ TODO
 ## That's It
 
 Have fun building! ✨
+
+[github-access-token]: https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line
+[github-action-input]: https://help.github.com/en/articles/workflow-syntax-for-github-actions#jobsjob_idstepswith
+[github-pages-domain-docs]: https://help.github.com/en/articles/using-a-custom-domain-with-github-pages
+[github-repo-secret]: https://help.github.com/en/articles/virtual-environments-for-github-actions#creating-and-using-secrets-encrypted-variables
