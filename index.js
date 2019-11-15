@@ -64,7 +64,7 @@ async function run() {
     for (const chartDirname of chartDirectories) {
       console.log(`Resolving helm chart dependency in directory ${chartDirname}`);
       await exec.exec(
-        `helm dependency update && helm dependency build`,
+        `helm dependency update`,
         [],
         { cwd: `./${chartsDir}/${chartDirname}` }
       );
