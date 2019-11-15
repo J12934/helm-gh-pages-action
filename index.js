@@ -12,6 +12,7 @@ const getDirectories = fileName =>
     withFileTypes: true,
   })
     .filter(dirent => dirent.isDirectory())
+    .filter(dirent => !(/(^|\/)\.[^\/\.]/g).test(dirent))
     .map(dirent => dirent.name);
 
 async function run() {
