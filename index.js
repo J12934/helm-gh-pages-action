@@ -12,6 +12,7 @@ const getDirectories = fileName =>
     withFileTypes: true,
   })
     .filter(dirent => dirent.isDirectory())
+    .filter(dirent => !(/(^|\/)\.[^\/\.]/g).test(dirent))
     .map(dirent => dirent.name);
 
 async function run() {
@@ -60,8 +61,15 @@ async function run() {
     const chartDirectories = getDirectories(path.resolve(`./${chartsDir}`));
 
     console.log('Charts dir content');
-    await exec.exec(`ls`, [], { cwd: `./${chartsDir}` });
+    await exec.exec(`ls`, ['-I ".*"'], { cwd: `./${chartsDir}` });
     for (const chartDirname of chartDirectories) {
+      console.log(`Resolving helm chart dependency in directory ${chartDirname}`);
+      await exec.exec(
+        `helm dependency update`,
+        [],
+        { cwd: `./${chartsDir}/${chartDirname}` }
+      );
+      
       console.log(`Packaging helm chart in directory ${chartDirname}`);
       await exec.exec(
         `helm package`,
