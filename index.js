@@ -55,9 +55,6 @@ async function run() {
       { cwd: './output' }
     );
 
-    await exec.exec(`helm init --client-only`);
-    console.log('Initialized helm client');
-
     const chartDirectories = getDirectories(path.resolve(`./${chartsDir}`));
 
     console.log('Charts dir content');
