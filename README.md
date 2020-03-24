@@ -1,3 +1,5 @@
+> NOTE: There now is an [official Helm Github Action](https://github.com/marketplace/actions/helm-chart-releaser) which does pretty much the same thing. I'd recommend giving the official action a try before using this.
+
 # Helm Publish
 
 GitHub Action to package and deploy your Helm charts to GitHub Pages
